@@ -1,5 +1,17 @@
 # em
+
+URL: https://www.emfit.space/
+
+Devpost for HackViolet 2021: https://devpost.com/software/em-2gthis
+
 Curated, personalized exercise programs for women to reduce period pain and discomfort.
+
+![alt text](https://github.com/cwlroda/em/blob/main/img/em.home.png)
+![alt text](https://github.com/cwlroda/em/blob/main/img/em.aboutus.png)
+![alt text](https://github.com/cwlroda/em/blob/main/img/em.ourimpact.png)
+![alt text](https://github.com/cwlroda/em/blob/main/img/em.exercise.png)
+![alt text](https://github.com/cwlroda/em/blob/main/img/em.skincare.png)
+![alt text](https://github.com/cwlroda/em/blob/main/img/em.rating.png)
 
 ## Inspiration
 Our female team members discovered that exercise helps to greatly relieve the discomfort associated with periods. This is supported by several studies. We wanted to create a solution that helps empower as many women as possible, and we realized that our web application could have a direct impact on the day-to-day well-being of women around the world. We wanted to encourage users to continue using our application, and we believe that helping women empower other women was a good motivator. We thus thought of partnering with companies such as Estée Lauder and NGOs such as ActionAid to supply women in less developed countries with essential sanitary products. 
