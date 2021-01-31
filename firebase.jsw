@@ -1,0 +1,44 @@
+// Filename: backend/firebase.jsw (web modules need to have a .jsw extension)
+
+import * as firebase from 'firebase/app';
+import 'firebase/firestore';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC2XpBe61yPqTR69EaoUm5f29HFbm6OIbI",
+  authDomain: "hackviolet-303314.firebaseapp.com",
+  projectId: "hackviolet-303314",
+  storageBucket: "hackviolet-303314.appspot.com",
+  messagingSenderId: "190402092087",
+  appId: "1:190402092087:web:dc81b6e9421b9c3bfbf3b2",
+  measurementId: "G-3HN4X4F60Z"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
+
+export async function query(type, symptoms, minDuration, maxDuration, intensity) {
+	return new Promise((resolve, reject) => {
+		db.collection("workouts")
+			.where("main", "==", symptoms)
+			.where("length", ">=", minDuration)
+			.where("length", "<=", maxDuration)
+			.where("intensity", "==", intensity)
+			.where("type", "==", type)
+			.orderBy("length", "desc")
+			.get()
+			.then(function (querySnapshot) {
+				let fitnessData = []
+				
+				querySnapshot.forEach(function(doc) {
+					fitnessData.push(doc.data())
+				})
+
+				if(fitnessData.length === 0) {
+					reject(`No ${type} data found`);
+				} else{
+					resolve(fitnessData);
+				}
+			})
+	})
+}

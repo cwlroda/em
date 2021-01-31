@@ -1,0 +1,129 @@
+// Filename: backend/logic.jsw (web modules need to have a .jsw extension)
+import {query} from 'backend/firebase.jsw';
+
+let fitnessData = [];
+let yogaData = [];
+// let stretchesData;
+
+let minDuration;
+let maxDuration;
+
+// async function selectStretches(data) {
+// 	let stretch = data[Math.floor(Math.random() * data.length)];
+// 	return stretch;
+// }
+
+function compare(a, b) {
+  let alen = a['length'];
+  let blen = b['length'];
+
+  if (alen > blen) return 1;
+  if (blen > alen) return -1;
+
+  return 0;
+}
+
+async function generateWorkouts() {
+	let data = [];
+
+	fitnessData = fitnessData.sort(compare);
+	yogaData = yogaData.sort(compare);
+
+	for (var i=0; i<7; i++) {
+		let day = [];
+		let fitness = fitnessData.pop();
+		let yoga = yogaData.pop();
+		
+		day.push(fitness['link']);
+		day.push(yoga['link']);
+
+		// let randStretch = await selectStretches(stretchesData);
+		// day.push(randStretch['link']);
+		data.push(day);
+
+		let fitnessIndex = fitnessData.unshift(fitness);
+		let yogaIndex = yogaData.unshift(yoga);
+	}
+
+	return data;
+}
+
+export async function generateQuery(symptoms, duration, intensity) {
+	if (duration === 30) {
+		minDuration = 0;
+		maxDuration = 30;
+	} else {
+		minDuration = 0;
+		maxDuration = 45;
+	}
+
+	let tmp = [];
+	
+	for (var i=0; i<symptoms.length; i++) {
+		try {
+			tmp = await query("Fitness",
+							symptoms[i],
+							minDuration,
+							maxDuration,
+							intensity);
+			
+			if (tmp.length !== 0) {
+				fitnessData = fitnessData.concat(tmp);
+			}
+		} catch (err) {
+			console.error(err);
+		}
+
+		try {
+			tmp = await query("Yoga",
+							symptoms[i],
+							minDuration,
+							maxDuration,
+							intensity);
+
+			if (tmp.length !== 0) {
+				yogaData = yogaData.concat(tmp);
+			}
+		} catch (err) {
+			console.error(err);
+		}
+	}
+	
+	// console.log(fitnessData);	
+	// console.log(yogaData);
+
+	// try {
+	// 	stretchesData = await query("Stretches",
+	// 							  symptoms,
+	// 							  minDuration,
+	// 							  maxDuration,
+	// 							  intensity);
+	// 	// console.log(stretchesData);
+	// 	// console.log(randStretch);
+	// } catch (err) {
+	// 	console.error(err);
+	// }
+
+	let data = await generateWorkouts();
+	return data;
+}
+
+
+
+//Use the following code in one of your site's front-end files
+//to call the multiply function from backend/logic.jsw.
+
+/* 
+import {multiply} from 'backend/logic';
+
+$w.onReady(function () {
+	
+	multiply(4,5).then(product => {
+	    console.log(product);
+	      // Logs: 20
+	})
+	.catch(error => {
+		console.log(error);
+	});
+});
+*/
